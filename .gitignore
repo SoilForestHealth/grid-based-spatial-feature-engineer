@@ -1,0 +1,22 @@
+# Ignore macOS system files
+.DS_Store
+plots/
+models/
+wandb/
+*.ipynb_checkpoints
+documents/
+__pycache__/
+*.ipynb
+.env
+
+*.pdf
+*.docx
+*.pptx
+*.doc
+*.csv
+*.xlsx
+*.pkl
+*.jpg
+*.png
+*.gif
+*.jpeg
