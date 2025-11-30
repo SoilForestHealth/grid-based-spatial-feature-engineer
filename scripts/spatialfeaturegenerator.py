@@ -55,6 +55,8 @@ class SpatialFeatureGenerator:
         
         result_data = []
         coordinates = []
+        grid_ids = []
+        grid_id_counter = 0
         
         for grid_start_i in range(0, x_size, stride):
             for grid_start_j in range(0, y_size, stride):
@@ -109,6 +111,9 @@ class SpatialFeatureGenerator:
                         
                         coordinates.append((global_i, global_j))
                         result_data.append(list(point_features) + spatial_features)
+                        grid_ids.append(grid_id_counter)
+                    # finished one grid block -> increment grid id
+                    grid_id_counter += 1
         
         original_cols = self.feature_columns
         spatial_cols = []
@@ -126,6 +131,7 @@ class SpatialFeatureGenerator:
         
         result_df['x_coord'] = [coord[0] for coord in coordinates]
         result_df['y_coord'] = [coord[1] for coord in coordinates]
+        result_df['grid_id'] = grid_ids
                 
         return result_df
 
