@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from pipeline.preprocess import Preprocessor
+from scripts.preprocess import Preprocessor
 
 class SpatialFeatureGenerator:
     def __init__(self, metadata_path: str):
