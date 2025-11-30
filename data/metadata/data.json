@@ -1,0 +1,26 @@
+{
+    "soil_grid_data_2025": {
+        "id": 0,
+        "extension": "xlsx",
+        "file_path": "./data/LSF_Grid_Soil_Data_2025_Summer.xlsx",
+        "features": ["COORDINATES", "Depth (cm)", "Organic Matter (%)"]
+    },
+    "topography": {
+        "id": 1,
+        "extension": "csv",
+        "file_path": "./data/LSF_Topography_Covariates_2025_Summer.csv",
+        "features": "all"
+    },
+    "remote_sensing": {
+        "id": 2,
+        "extension": "csv",
+        "file_path": "./data/raw_field_summer_2025_covariates_combined.csv",
+        "features": ["COORDINATES", "Depth..cm.", "NDVI_mean_year2024", "NDMI_mean_year2024", "NDWI_mean_year2024", "S2REP_mean_year2024"]
+    },
+    "cloudless": {
+        "id": 3,
+        "extension": "csv",
+        "file_path": "./data/s2_cloudless_covariates_field_summer_2025_combined.csv",
+        "features": ["COORDINATES", "Depth..cm.", "bd2", "bd5", "soc2", "soc5", "clay2", "clay5", "sand2", "sand5"]
+    }
+}
