@@ -20,7 +20,7 @@ class SpatialFeatureGenerator:
         return df_lower_depth, df_higher_depth
     
     def df_to_matrix(self, df: pd.DataFrame):
-        # Create a copy to avoid modifying the original dataframe
+        # work with a copy of dataframe
         df_clean = df.drop('depth', axis=1)
     
         coords = df_clean['ID'].str.replace('[()]', '', regex=True).str.split(',', expand=True)
@@ -38,7 +38,7 @@ class SpatialFeatureGenerator:
         num_features = len(self.feature_columns)
         matrix = np.full((len(unique_x), len(unique_y), num_features), np.nan)
         
-        # Use enumerate to avoid index issues
+        # use enumerate to for indexing
         for row_idx, (idx, row) in enumerate(df_clean.iterrows()):
             x_coord = coords.iloc[row_idx]['x']
             y_coord = coords.iloc[row_idx]['y']
@@ -69,7 +69,6 @@ class SpatialFeatureGenerator:
                 actual_width = grid_end_j - grid_start_j
                 padded_grid[:actual_height, :actual_width, :] = grid
 
-                # Only process points that are actually in the matrix (not padding)
                 for local_i in range(actual_height):
                     for local_j in range(actual_width):
                         global_i = grid_start_i + local_i
@@ -82,20 +81,19 @@ class SpatialFeatureGenerator:
                         for feat_idx in range(num_features):
                             feature_values = padded_grid[:, :, feat_idx]
                             
-                            # Mean and std using padded grid
+                            # mean and std using padded grid
                             mean_val = np.nanmean(feature_values)
                             spatial_features.append(mean_val)
                             
                             std_val = np.nanstd(feature_values)
                             spatial_features.append(std_val)
                             
-                            # Weighted statistics excluding current point
+                            # weighted statistics excluding current point
                             include_mask = np.ones_like(feature_values, dtype=bool)
                             include_mask[local_i, local_j] = False
                             
                             valid_include_mask = include_mask & ~np.isnan(feature_values)
                             
-                            # No need to check if sum > 0, we know there are other points in the padded grid
                             current_point = np.array([local_i, local_j])
                             other_points = np.column_stack(np.where(valid_include_mask))
                             
@@ -135,9 +133,11 @@ class SpatialFeatureGenerator:
 
         df_lower_depth, df_higher_depth = self.disect_data_by_depth()
 
+        # convert to matrices
         matrix_lower_depth = self.df_to_matrix(df_lower_depth)
         matrix_higher_depth = self.df_to_matrix(df_higher_depth)
 
+        # compute spatial features
         df_lower_depth_spatial = self.compute_spatial_features_with_stride(matrix_lower_depth, 3, 3)
         df_higher_depth_spatial = self.compute_spatial_features_with_stride(matrix_higher_depth, 3, 3)
 
